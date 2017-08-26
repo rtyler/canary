@@ -1,6 +1,6 @@
 = Canary
 
-image::https://github.com/codevalet/canary/raw/master/assets/songbirg-128.png[Grace]
+image::https://github.com/codevalet/canary/raw/master/assets/songbird-128.png[Grace]
 
 Canary is the service providing public status and information for
 link:http://codevalet.io[Code Valet].
