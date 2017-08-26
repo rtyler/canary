@@ -1,0 +1,15 @@
+= Canary
+
+image::https://github.com/codevalet/canary/raw/master/assets/songbirg-128.png[Grace]
+
+Canary is the service providing public status and information for
+link:http://codevalet.io[Code Valet].
+
+== Goals
+
+. Provide live-visibility for link:https://jenkins.io[Jenkins] developers into
+  warnings/errors from Code Valet.
+. Give Code Valet users insight into the status of the service.
+. Provide Code Valet administrators with a centralized dashboard for service
+  health.
+
