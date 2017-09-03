@@ -10,7 +10,7 @@ depends: Gemfile
 	./scripts/ruby bundle install
 
 run: depends
-	./scripts/ruby bundle exec rackup -o 0.0.0.0
+	./scripts/ruby bundle exec puma
 
 container: depends Dockerfile
 	docker build -t rtyler/codevalet-canary .
