@@ -1,11 +1,21 @@
 #!/usr/bin/env groovy
 
 pipeline {
-    agent any
+    agent { label 'docker' }
     stages {
-        stage('Build') {
+        stage('Prepare') {
             steps {
-                echo 'Nothing yet'
+                sh 'make depends'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'make check'
+            }
+        }
+        stage('Build container') {
+            steps {
+                sh 'make container'
             }
         }
     }

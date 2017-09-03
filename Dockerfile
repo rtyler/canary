@@ -14,7 +14,7 @@ ENV BUNDLE_APP_CONFIG=${APP_DIR}/vendor/gems/.bundle
 ENV BUNDLE_DISABLE_SHARED_GEMS=true
 
 ADD Gemfile* ${APP_DIR}/
-ADD app.rb ${APP_DIR}/
+ADD app/ ${APP_DIR}/app/
 ADD config.ru ${APP_DIR}/
 ADD views ${APP_DIR}/views/
 ADD assets ${APP_DIR}/assets/
