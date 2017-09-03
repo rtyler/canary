@@ -1,6 +1,6 @@
 = Canary
 
-image::http://codevalet.codevalet.io/job/CodeValet/job/canary/job/master/badge/icon[Build Status, link=http://codevalet.codevalet.io/blue/organizations/jenkins/CodeValet%2Fcanary/activity]
+image::https://codevalet.io/u/codevalet/job/CodeValet/job/canary/job/master/badge/icon[Build Status, link=http://codevalet.codevalet.io/blue/organizations/jenkins/CodeValet%2Fcanary/activit://codevalet.io/u/codevalet/blue/organizations/jenkins/CodeValet%2Fcanary/activity]
 
 image::https://github.com/codevalet/canary/raw/master/assets/songbird-128.png[Grace]
 
