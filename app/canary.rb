@@ -5,6 +5,8 @@ require 'raven'
 require 'sinatra/base'
 require 'sentry-api'
 
+require 'canary/jenkins'
+
 module CodeValet
   module Canary
     class App < Sinatra::Base
@@ -12,7 +14,8 @@ module CodeValet
       enable  :raise_errors
       disable :show_exceptions
 
-      set :public_folder, File.dirname(__FILE__) + '/assets'
+      set :public_folder, File.dirname(__FILE__) + '/../assets'
+      set :views, File.dirname(__FILE__) + '/../views'
 
       SentryApi.configure do |config|
         config.endpoint = 'https://app.getsentry.com/api/0'
@@ -32,6 +35,7 @@ module CodeValet
               :layout => :_base,
               :locals => {
                   :projects => projects,
+                  :jenkins => Jenkins,
               }
       end
 

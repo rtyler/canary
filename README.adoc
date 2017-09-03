@@ -15,3 +15,13 @@ link:http://codevalet.io[Code Valet].
 . Provide Code Valet administrators with a centralized dashboard for service
   health.
 
+
+
+== Hacking
+
+This application requires a Sentry API token to be defined in the environment
+as `SENTRY_API_TOKEN` or else it simply won't work properly.
+
+Once that environment variable has been defined, executing `make run` on a
+Docker-capable machine should bring Canary online at
+link:http://localhost:9292/[localhost:9292].

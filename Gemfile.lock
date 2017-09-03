@@ -50,6 +50,7 @@ PLATFORMS
 
 DEPENDENCIES
   haml
+  httparty
   rspec
   sentry-api
   sentry-raven

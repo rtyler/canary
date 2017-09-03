@@ -13,34 +13,56 @@
         which provides radically transparent feedback for the service's
         operation.  Canary allows developers to triage and understand issues
         affecting Code Valet, or one of its components.
-
-  - projects.auto_paginate do |project|
-    .row
-      .col-md-12
-        %h3= project.name
+  .row
+    .col-md-12
+      %h3
+        Recent deployments
+      .container
         %p
-          - events = SentryApi.project_issues(project.slug)
-          - unless events.size > 0
-            No recent events (yay).
-          - else
-            - events.each do |event|
-              - badge = 'danger'
-              - if event.level != 'error'
-                - badge = event.level
-              .row
-                .col-lg-10
-                  %strong
-                    = event.title
+          The
+          %strong
+            alpha
+          channel was last rebuilt on:
+          %code
+            = jenkins.rebuiltAlpha
+        %p
+          The
+          %strong
+            general availability
+          channel was last rebuilt on:
+          %code
+            = jenkins.rebuiltGa
 
-                  .mb-2.text-muted
-                    %span.badge{:class => "badge-#{badge}"}
-                      = event.count
-                    = event.culprit
+  .row
+    .col-md-12
+      %h3
+        Recent issues
+      .container
+        - projects.auto_paginate do |project|
+          %h4= project.name
+          %p
+            - events = SentryApi.project_issues(project.slug)
+            - unless events.size > 0
+              No recent events (yay).
+            - else
+              - events.each do |event|
+                - badge = 'danger'
+                - if event.level != 'error'
+                  - badge = event.level
+                .row
+                  .col-lg-10
+                    %strong
+                      = event.title
 
-                  %p
-                    %a{:href => "issue/#{event.id}"}
-                      View
-                    &middot;
-                    %a{:href => event.permalink, :target => '_blank'}
-                      View in Sentry
+                    .mb-2.text-muted
+                      %span.badge{:class => "badge-#{badge}"}
+                        = event.count
+                      = event.culprit
+
+                    %p
+                      %a{:href => "issue/#{event.id}"}
+                        View
+                      &middot;
+                      %a{:href => event.permalink, :target => '_blank'}
+                        View in Sentry
         %hr/
