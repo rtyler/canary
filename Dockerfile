@@ -18,4 +18,4 @@ ADD app/ ${APP_DIR}/app/
 ADD config.ru ${APP_DIR}/
 ADD views ${APP_DIR}/views/
 ADD assets ${APP_DIR}/assets/
-CMD bundle exec puma
+CMD bundle exec rackup -o 0.0.0.0
