@@ -4,7 +4,10 @@ all: check container
 check: spec check-container
 
 spec: depends
-	./scripts/ruby bundle exec rspec -c
+	./scripts/ruby bundle exec rspec -c \
+						--order random \
+						--format progress \
+						--format html --out rspec.html
 
 depends: Gemfile
 	./scripts/ruby bundle install

@@ -5,7 +5,7 @@ require 'raven'
 require 'sinatra/base'
 require 'sentry-api'
 
-require 'canary/jenkins'
+require 'canary/dao/jenkins'
 
 module CodeValet
   module Canary
@@ -35,7 +35,7 @@ module CodeValet
               :layout => :_base,
               :locals => {
                   :projects => projects,
-                  :jenkins => Jenkins,
+                  :jenkins => DAO::Jenkins.new,
               }
       end
 
