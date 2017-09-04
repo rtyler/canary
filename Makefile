@@ -4,7 +4,13 @@ all: check container
 check: spec check-container
 
 spec: depends
-	./scripts/ruby bundle exec rspec -c
+	./scripts/ruby bundle exec rspec -c \
+						--order random \
+						--format progress \
+						--format html --out rspec.html
+
+rubocop: depends
+	./scripts/ruby bundle exec rubocop
 
 depends: Gemfile
 	./scripts/ruby bundle install
@@ -21,4 +27,4 @@ container: depends Dockerfile
 clean:
 	rm -rf vendor
 
-.PHONY: all depends clean run check container spec check-container
+.PHONY: all depends clean run check container spec check-container rubocop

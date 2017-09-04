@@ -1,14 +1,14 @@
-#!/usr/bin/env ruby
-
 require 'haml'
 require 'raven'
 require 'sinatra/base'
 require 'sentry-api'
 
-require 'canary/jenkins'
+require 'canary/dao/jenkins'
+require 'canary/dao/sentry'
 
 module CodeValet
   module Canary
+    # Basic Canary web app entry point.
     class App < Sinatra::Base
       enable  :sessions
       enable  :raise_errors
@@ -24,37 +24,24 @@ module CodeValet
       end
 
       get '/' do
-        projects = []
-        begin
-          projects = SentryApi.projects
-        rescue StandardError => exc
-          Raven.capture_exception(exc)
-        end
-
         haml :index,
-              :layout => :_base,
-              :locals => {
-                  :projects => projects,
-                  :jenkins => Jenkins,
-              }
+             :layout => :_base,
+             :locals => {
+               :sentry => DAO::Sentry.new,
+               :jenkins => DAO::Jenkins.new,
+             }
       end
 
       get '/issue/:id' do
-        issue = nil
-        events = []
-        begin
-          issue = SentryApi.issue(params['id'])
-          events = SentryApi.issue_events(params['id'])
-        rescue StandardError => exc
-          Raven.capture_exception(exc)
-        end
+        sentry = DAO::Sentry.new
+        issue_id = params['id']
 
         haml :issue,
-              :layout => :_base,
-              :locals => {
-                  :issue => issue,
-                  :events => events,
-              }
+             :layout => :_base,
+             :locals => {
+               :issue => sentry.issue_by(issue_id),
+               :events => sentry.events_for_issue(issue_id),
+             }
       end
     end
   end

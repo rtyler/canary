@@ -19,7 +19,7 @@ ADD views ${APP_DIR}/views/
 ADD assets ${APP_DIR}/assets/
 
 RUN apk add -U ${BUILD_PKGS} && \
-        bundle install && \
+        bundle install --without test && \
         apk del ${BUILD_PKGS} && \
         rm -rf /var/cache/apk/*
 

@@ -11,6 +11,7 @@ exec docker run --rm ${TTY_ARGS} \
     -u $(id -u):$(id -g) \
     -w ${PWD} \
     -v ${PWD}:${PWD} \
+    -e HOME=$PWD \
     -e LANG=C.UTF-8 \
     -e GEM_HOME=${PWD}/vendor/gems \
     -e BUNDLE_PATH=${PWD}/vendor/gems \
