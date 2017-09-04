@@ -6,7 +6,8 @@ ENV['RACK_ENV'] ||= 'development'
 require 'canary'
 require 'raven'
 
-use Rack::Static, :urls => ['/css', '/img', '/js'], :root => 'public'
+# Skip over Sinatra entirely for static assets
+use Rack::Static, :urls => ['/css', '/img', '/js'], :root => 'assets'
 use Raven::Rack
 
 run CodeValet::Canary::App

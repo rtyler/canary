@@ -4,34 +4,46 @@
       - unless events
         Something went wrong when rendering this page :(
       - else
-        %h2
+        %h3
           = issue.title
-        %h3.text-muted
+        %h4.text-muted
           = issue.culprit
-        .row
-          .col-md-12
-            %small
-              There are
-              %strong
-                = events.size
-              events associated with this issue.
 
-        - events.each do |event|
+        - event = events.first
+        .row
+          .col-md-12.issue-metadata
+            .container
+              .row.p-1
+                %strong
+                  Tags
+                %div.tags
+                  - event.tags.each do |tag|
+                    %span.badge.badge-info
+                      #{tag['key']}:#{tag['value']}
+              .row.p-1
+                %small
+                  There are
+                  %strong
+                    = events.size
+                  similar events associated with this issue.
+        - event.entries.each do |entry|
           .row
             .col-md-12
-              - event.tags.each do |tag|
-                %span.badge.badge-info
-                  #{tag['key']}:#{tag['value']}
-              - event.entries.each do |entry|
-                / #{entry.inspect}
-                - if entry['type'] == 'message'
-                  %p
+              / #{entry.inspect}
+              - if entry['type'] == 'message'
+                %h5
+                  Message
+                .container.p-1
+                  %blockquote.blockquote
                     - if entry['data']['formatted']
                       = entry['data']['formatted']
                     - else
                       = entry['data']['message']
 
-                - if entry['type'] == 'exception'
+              - if entry['type'] == 'exception'
+                %h5
+                  Stack trace
+                .container.p-1
                   - entry['data']['values'].each do |val|
                     %ul.list-unstyled
                       - val['stacktrace']['frames'].reverse_each do |frame|
@@ -46,4 +58,3 @@
                             %code
                               = frame['absPath']
 
-          - break

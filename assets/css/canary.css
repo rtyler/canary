@@ -1,0 +1,18 @@
+
+.project {
+    border-bottom: 1px solid #868e96;
+}
+
+.event {
+    background-color: #f8f9fa;
+    overflow: overlay;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.issue-metadata {
+    border-bottom: 1px solid #f8f9fa;
+    border-top: 1px solid #f8f9fa;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}

@@ -45,30 +45,31 @@
 
         - else
           - projects.each do |project|
-            %h4= project.name
-            %p
+            .row.p-3.project
+              %h4= project.name
               - events = sentry.issues_for(project.slug)
-              - unless events.size > 0
-                No recent events (yay).
-              - else
-                - events.each do |event|
-                  - badge = 'danger'
-                  - if event.level != 'error'
-                    - badge = event.level
-                  .row
-                    .col-lg-10
-                      %strong
-                        = event.title
-
-                      .mb-2.text-muted
+              .col-lg-12
+                - unless events.size > 0
+                  No recent events (yay).
+                - else
+                  - events.each do |event|
+                    - badge = 'danger'
+                    - if event.level != 'error'
+                      - badge = event.level
+                    .row.p-2.event
+                      .col-lg-10
                         %span.badge{:class => "badge-#{badge}"}
                           = event.count
-                        = event.culprit
+                        %strong
+                          = event.title
 
-                      %p
-                        %a{:href => "issue/#{event.id}"}
-                          View
-                        &middot;
-                        %a{:href => event.permalink, :target => '_blank'}
-                          View in Sentry
-        %hr/
+                        .mb-2.text-muted
+                          = event.culprit
+
+                        %p
+                          %a{:href => "issue/#{event.id}"}
+                            View
+                          &middot;
+                          %a{:href => event.permalink, :target => '_blank'}
+                            View in Sentry
+          %hr/
