@@ -1,14 +1,14 @@
 require 'concurrent/hash'
 require 'mini_cache'
+require 'net/http'
 
 module CodeValet
   module Canary
     # The DAO module contains some data-access objects which are to be used
     # from the web tier.
     module DAO
-      # Unless otherwise specified, cached entries should "live" for this
-      # number of seconds
-      DEFAULT_CACHE_SECONDS = 120
+      NET_ERRORS = [Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+                 Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError]
 
       # Access the caching object
       #

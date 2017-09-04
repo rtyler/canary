@@ -1,5 +1,6 @@
 require 'faraday'
 require 'canary/dao'
+require 'raven'
 
 module CodeValet::Canary::DAO
   class Jenkins
@@ -34,15 +35,32 @@ module CodeValet::Canary::DAO
       # NOTE: worth investigating whether Jenkins will provide the appropriate
       # caching headers to 
       url = "#{URL_BASE}/u/#{user}/userContent/builtOn.txt"
-      response = Faraday.get(url)
+      response = connection.get(url)
       if response.success?
         return response.body
       end
       @error = response.status
       return nil
+    rescue *CodeValet::Canary::DAO::NET_ERRORS => e
+      @error = e
+      return nil
+    rescue StandardError => e
+      @error = e
+      Raven.capture_exception(e)
+      return nil
     end
 
     private
+
+    def connection
+      return Faraday.new(:ssl => {:verify => true}) do |f|
+        f.adapter Faraday.default_adapter
+        f.options.timeout = 4
+        f.options.open_timeout = 3
+      end
+    end
+
+
     def cache
       return CodeValet::Canary::DAO.cache
     end

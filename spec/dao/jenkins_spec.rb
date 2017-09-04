@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+require 'json'
 require 'canary/dao/jenkins'
 
 describe CodeValet::Canary::DAO::Jenkins do
@@ -39,5 +40,21 @@ describe CodeValet::Canary::DAO::Jenkins do
   end
 
   context 'with network errors' do
+    it 'should silently handle ECONNRESET' do
+      expect(subject).to receive(:connection).and_raise(Errno::ECONNRESET)
+
+      expect(subject.rebuiltGA).to be_nil
+      expect(subject).to be_errored
+    end
+  end
+
+  context 'with unknown errors' do
+    it 'should record an exception and return nil' do
+      expect(subject).to receive(:connection).and_raise(JSON::ParserError)
+      expect(Raven).to receive(:capture_exception)
+
+      expect(subject.rebuiltGA).to be_nil
+      expect(subject).to be_errored
+    end
   end
 end
