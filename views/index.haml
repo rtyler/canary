@@ -38,15 +38,16 @@
       %h3
         Recent issues
       .container
-        - if projects.size == 0
+        - projects = sentry.projects
+        - if sentry.errored?
 
           Something went wrong when querying the error service!
 
         - else
-          - projects.auto_paginate do |project|
+          - projects.each do |project|
             %h4= project.name
             %p
-              - events = SentryApi.project_issues(project.slug)
+              - events = sentry.issues_for(project.slug)
               - unless events.size > 0
                 No recent events (yay).
               - else

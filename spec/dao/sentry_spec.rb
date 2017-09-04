@@ -72,10 +72,76 @@ describe CodeValet::Canary::DAO::Sentry do
       expect(dao).to be_errored
     end
 
-    it 'should cache the response from SentryApi#projects' do
+    it 'should cache the response from SentryApi#project_issues' do
       expect(SentryApi).to receive(:project_issues).and_return(response)
       3.times do
         expect(dao.issues_for('rspec')).to eql(response)
+      end
+    end
+  end
+
+  it { should respond_to :issue_by }
+  describe '#issue_by' do
+    let(:dao) { described_class.new }
+    subject(:issue) { dao.issue_by('fake-id') }
+    let(:response) { Hash.new }
+
+    it 'should return SentryApi#issue' do
+      expect(SentryApi).to receive(:issue).and_return(response)
+      expect(issue).to eql(response)
+    end
+
+    it 'should gracefully handle network errors' do
+      expect(SentryApi).to receive(:issue).and_raise(Errno::ECONNRESET)
+      expect(issue).to be_nil
+      expect(dao).to be_errored
+    end
+
+    it 'should gracefully handle and record unknown errors' do
+      expect(SentryApi).to receive(:issue).and_raise(JSON::ParserError)
+      expect(Raven).to receive(:capture_exception)
+
+      expect(issue).to be_nil
+      expect(dao).to be_errored
+    end
+
+    it 'should cache the response from SentryApi#issue' do
+      expect(SentryApi).to receive(:issue).and_return(response)
+      3.times do
+        expect(dao.issue_by('fake-id')).to eql(response)
+      end
+    end
+  end
+
+  it { should respond_to :events_for_issue }
+  describe '#events_for_issue' do
+    let(:dao) { described_class.new }
+    subject(:issue) { dao.events_for_issue('fake-id') }
+    let(:response) { Hash.new }
+
+    it 'should return SentryApi#issue' do
+      expect(SentryApi).to receive(:issue_events).and_return(response)
+      expect(issue).to eql(response)
+    end
+
+    it 'should gracefully handle network errors' do
+      expect(SentryApi).to receive(:issue_events).and_raise(Errno::ECONNRESET)
+      expect(issue).to be_nil
+      expect(dao).to be_errored
+    end
+
+    it 'should gracefully handle and record unknown errors' do
+      expect(SentryApi).to receive(:issue_events).and_raise(JSON::ParserError)
+      expect(Raven).to receive(:capture_exception)
+
+      expect(issue).to be_nil
+      expect(dao).to be_errored
+    end
+
+    it 'should cache the response from SentryApi#issue' do
+      expect(SentryApi).to receive(:issue_events).and_return(response)
+      3.times do
+        expect(dao.events_for_issue('fake-id')).to eql(response)
       end
     end
   end

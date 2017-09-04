@@ -6,6 +6,7 @@ require 'sinatra/base'
 require 'sentry-api'
 
 require 'canary/dao/jenkins'
+require 'canary/dao/sentry'
 
 module CodeValet
   module Canary
@@ -34,7 +35,7 @@ module CodeValet
         haml :index,
               :layout => :_base,
               :locals => {
-                  :projects => projects,
+                  :sentry => DAO::Sentry.new,
                   :jenkins => DAO::Jenkins.new,
               }
       end
@@ -42,18 +43,14 @@ module CodeValet
       get '/issue/:id' do
         issue = nil
         events = []
-        begin
-          issue = SentryApi.issue(params['id'])
-          events = SentryApi.issue_events(params['id'])
-        rescue StandardError => exc
-          Raven.capture_exception(exc)
-        end
+        issue_id = params['id']
+        sentry = DAO::Sentry.new
 
         haml :issue,
               :layout => :_base,
               :locals => {
-                  :issue => issue,
-                  :events => events,
+                :issue => sentry.issue_by(issue_id),
+                :events => sentry.events_for_issue(issue_id),
               }
       end
     end
