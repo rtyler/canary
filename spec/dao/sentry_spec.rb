@@ -66,7 +66,8 @@ describe CodeValet::Canary::DAO::Sentry do
 
     # https://github.com/CodeValet/canary/issues/5
     it 'should gracefully handle Sentry API parsing errors' do
-      expect(SentryApi).to receive(:project_issues).and_raise(SentryApi::Error::Parsing)
+      expect(SentryApi).to \
+        receive(:project_issues).and_raise(SentryApi::Error::Parsing)
       expect(Raven).not_to receive(:capture_exception)
 
       expect(issues).to be_empty
@@ -93,7 +94,7 @@ describe CodeValet::Canary::DAO::Sentry do
   describe '#issue_by' do
     let(:dao) { described_class.new }
     subject(:issue) { dao.issue_by('fake-id') }
-    let(:response) { Hash.new }
+    let(:response) { {} }
 
     it 'should return SentryApi#issue' do
       expect(SentryApi).to receive(:issue).and_return(response)
@@ -126,7 +127,7 @@ describe CodeValet::Canary::DAO::Sentry do
   describe '#events_for_issue' do
     let(:dao) { described_class.new }
     subject(:issue) { dao.events_for_issue('fake-id') }
-    let(:response) { Hash.new }
+    let(:response) { {} }
 
     it 'should return SentryApi#issue' do
       expect(SentryApi).to receive(:issue_events).and_return(response)

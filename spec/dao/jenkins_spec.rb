@@ -14,26 +14,26 @@ describe CodeValet::Canary::DAO::Jenkins do
     context 'with a stubbed network call' do
       let(:response) { 'stubbed!' }
       before :each do
-        expect(subject).to receive(:rebuiltFor).and_return(response)
+        expect(subject).to receive(:rebuilt_for).and_return(response)
       end
 
-      it 'provides a response on #rebuiltAlpha' do
-        expect(subject.rebuiltAlpha).to eql(response)
+      it 'provides a response on #rebuilt_alpha' do
+        expect(subject.rebuilt_alpha).to eql(response)
       end
 
-      it 'provides a response on #rebuiltGA' do
-        expect(subject.rebuiltGA).to eql(response)
+      it 'provides a response on #rebuilt_ga' do
+        expect(subject.rebuilt_ga).to eql(response)
       end
 
-      it 'should cache subsequent calls on #rebuiltAlpha' do
+      it 'should cache subsequent calls on #rebuilt_alpha' do
         3.times do
-          expect(subject.rebuiltAlpha).to eql(response)
+          expect(subject.rebuilt_alpha).to eql(response)
         end
       end
 
-      it 'should cache subsequent calls on #rebuiltGA' do
+      it 'should cache subsequent calls on #rebuilt_ga' do
         3.times do
-          expect(subject.rebuiltGA).to eql(response)
+          expect(subject.rebuilt_ga).to eql(response)
         end
       end
     end
@@ -43,7 +43,7 @@ describe CodeValet::Canary::DAO::Jenkins do
     it 'should silently handle ECONNRESET' do
       expect(subject).to receive(:connection).and_raise(Errno::ECONNRESET)
 
-      expect(subject.rebuiltGA).to be_nil
+      expect(subject.rebuilt_ga).to be_nil
       expect(subject).to be_errored
     end
   end
@@ -53,7 +53,7 @@ describe CodeValet::Canary::DAO::Jenkins do
       expect(subject).to receive(:connection).and_raise(JSON::ParserError)
       expect(Raven).to receive(:capture_exception)
 
-      expect(subject.rebuiltGA).to be_nil
+      expect(subject.rebuilt_ga).to be_nil
       expect(subject).to be_errored
     end
   end

@@ -5,6 +5,10 @@ require 'raven'
 require 'sentry-api'
 
 module CodeValet::Canary::DAO
+  #  The Sentry DAO provides some caching calls through to the SentryApi gem
+  #
+  #  In the future it's highly likely that this class sprouts some direct
+  #  Sentry REST API calls
   class Sentry
     attr_reader :error
 
@@ -25,8 +29,8 @@ module CodeValet::Canary::DAO
       # added/changed very often
       return cache.get_or_set('SentryApi#projects',
                               :expires_in => 10 * CACHE_SECONDS) do
-        SentryApi.projects
-      end
+               SentryApi.projects
+             end
     rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return []
@@ -44,8 +48,8 @@ module CodeValet::Canary::DAO
     def issues_for(project_key)
       return cache.get_or_set("SentryApi#project_issues(#{project_key})",
                               :expires_in => CACHE_SECONDS) do
-        SentryApi.project_issues(project_key)
-      end
+               SentryApi.project_issues(project_key)
+             end
     rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return []
@@ -54,7 +58,6 @@ module CodeValet::Canary::DAO
       Raven.capture_exception(e)
       return []
     end
-
 
     # Return the issue by the given Sentry issue ID
     #
@@ -65,8 +68,8 @@ module CodeValet::Canary::DAO
     def issue_by(id)
       return cache.get_or_set("SentryApi#issue(#{id})",
                               :expires_in => 5 * CACHE_SECONDS) do
-        SentryApi.issue(id)
-      end
+               SentryApi.issue(id)
+             end
     rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return nil
@@ -79,8 +82,8 @@ module CodeValet::Canary::DAO
     def events_for_issue(id)
       return cache.get_or_set("SentryApi#issue_events(#{id})",
                               :expires_in => CACHE_SECONDS) do
-        SentryApi.issue_events(id)
-      end
+               SentryApi.issue_events(id)
+             end
     rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return nil

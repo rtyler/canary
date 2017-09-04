@@ -7,8 +7,15 @@ module CodeValet
     # The DAO module contains some data-access objects which are to be used
     # from the web tier.
     module DAO
-      NET_ERRORS = [Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-                 Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError]
+      NET_ERRORS = [
+        Timeout::Error,
+        Errno::EINVAL,
+        Errno::ECONNRESET,
+        EOFError,
+        Net::HTTPBadResponse,
+        Net::HTTPHeaderSyntaxError,
+        Net::ProtocolError,
+      ].freeze
 
       # Access the caching object
       #
