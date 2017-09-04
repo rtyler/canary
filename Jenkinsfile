@@ -12,8 +12,10 @@ pipeline {
             steps {
                 sh 'make check'
             }
-            always {
-                archiveArtifacts 'rspec.html'
+            post {
+                always {
+                    archiveArtifacts 'rspec.html'
+                }
             }
         }
         stage('Build container') {
