@@ -64,6 +64,15 @@ describe CodeValet::Canary::DAO::Sentry do
       expect(dao).to be_errored
     end
 
+    # https://github.com/CodeValet/canary/issues/5
+    it 'should gracefully handle Sentry API parsing errors' do
+      expect(SentryApi).to receive(:project_issues).and_raise(SentryApi::Error::Parsing)
+      expect(Raven).not_to receive(:capture_exception)
+
+      expect(issues).to be_empty
+      expect(dao).to be_errored
+    end
+
     it 'should gracefully handle and record unknown errors' do
       expect(SentryApi).to receive(:project_issues).and_raise(JSON::ParserError)
       expect(Raven).to receive(:capture_exception)

@@ -27,7 +27,7 @@ module CodeValet::Canary::DAO
                               :expires_in => 10 * CACHE_SECONDS) do
         SentryApi.projects
       end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return []
     rescue StandardError => e
@@ -46,7 +46,7 @@ module CodeValet::Canary::DAO
                               :expires_in => CACHE_SECONDS) do
         SentryApi.project_issues(project_key)
       end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return []
     rescue StandardError => e
@@ -67,7 +67,7 @@ module CodeValet::Canary::DAO
                               :expires_in => 5 * CACHE_SECONDS) do
         SentryApi.issue(id)
       end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return nil
     rescue StandardError => e
@@ -81,7 +81,7 @@ module CodeValet::Canary::DAO
                               :expires_in => CACHE_SECONDS) do
         SentryApi.issue_events(id)
       end
-    rescue *CodeValet::Canary::DAO::NET_ERRORS => e
+    rescue *CodeValet::Canary::DAO::NET_ERRORS, SentryApi::Error::Parsing => e
       @error = e
       return nil
     rescue StandardError => e
