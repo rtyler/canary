@@ -1,6 +1,7 @@
 require 'concurrent/hash'
 require 'mini_cache'
 require 'net/http'
+require 'openssl'
 
 module CodeValet
   module Canary
@@ -15,6 +16,7 @@ module CodeValet
         Net::HTTPBadResponse,
         Net::HTTPHeaderSyntaxError,
         Net::ProtocolError,
+        OpenSSL::SSL::SSLError,
       ].freeze
 
       # Access the caching object

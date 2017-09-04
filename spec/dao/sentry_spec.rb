@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require 'json'
+require 'openssl'
 
 require 'canary/dao/sentry'
 
@@ -44,6 +45,15 @@ describe CodeValet::Canary::DAO::Sentry do
       3.times do
         expect(subject.projects).to eql(projects)
       end
+    end
+
+    # https://github.com/codevalet/canary/issues/2
+    it 'should gracefully handle OpenSSL errors' do
+      expect(SentryApi).to receive(:projects).and_raise(OpenSSL::SSL::SSLError)
+      expect(Raven).not_to receive(:capture_exception)
+
+      expect(subject.projects).to be_empty
+      expect(subject).to be_errored
     end
   end
 
