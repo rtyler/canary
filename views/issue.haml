@@ -37,7 +37,7 @@
                 .container.p-1
                   %blockquote.blockquote
                     - if entry['data']['formatted']
-                      = CGI.escapeHTML(entry['data']['formatted']
+                      = CGI.escapeHTML(entry['data']['formatted'])
                     - else
                       = CGI.escapeHTML(entry['data']['message'])
 
