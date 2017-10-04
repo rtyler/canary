@@ -1,3 +1,4 @@
+- require 'cgi'
 .container
   .row
     .col-md-12
@@ -5,9 +6,9 @@
         Something went wrong when rendering this page :(
       - else
         %h3
-          = issue.title
+          = CGI.escapeHTML(issue.title)
         %h4.text-muted
-          = issue.culprit
+          = CGI.escapeHTML(issue.culprit)
 
         - event = events.first
         .row
@@ -36,9 +37,9 @@
                 .container.p-1
                   %blockquote.blockquote
                     - if entry['data']['formatted']
-                      = entry['data']['formatted']
+                      = CGI.escapeHTML(entry['data']['formatted']
                     - else
-                      = entry['data']['message']
+                      = CGI.escapeHTML(entry['data']['message'])
 
               - if entry['type'] == 'exception'
                 %h5

@@ -1,3 +1,4 @@
+- require 'cgi'
 .container
   .row
     .col-md-12
@@ -61,10 +62,10 @@
                         %span.badge{:class => "badge-#{badge}"}
                           = event.count
                         %strong
-                          = event.title
+                          = CGI.escapeHTML(event.title)
 
                         .mb-2.text-muted
-                          = event.culprit
+                          = CGI.escapeHTML(event.culprit)
 
                         %p
                           %a{:href => "issue/#{event.id}"}
