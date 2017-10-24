@@ -3,7 +3,17 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'printenv'
+        sh 'make depends'
+      }
+    }
+    stage('Test') {
+      steps {
+        sh 'make check'
+      }
+    }
+    stage('Produce Container') {
+      steps {
+        sh 'make container'
       }
     }
   }
