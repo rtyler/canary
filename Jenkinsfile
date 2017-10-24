@@ -4,6 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'make depends'
+        sh 'ls -lah'
       }
     }
     stage('Test') {
