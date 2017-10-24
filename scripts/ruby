@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -xe
 
 # If we're executing from a normal shell, allow input. If we're in a
 # subprocess, like under Jenkins Pipeline, don't allow it
