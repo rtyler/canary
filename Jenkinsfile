@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'make depends'
+        sh 'ls -lah && make depends'
         sh 'ls -lah'
       }
     }
